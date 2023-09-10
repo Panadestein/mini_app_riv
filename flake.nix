@@ -35,7 +35,7 @@
             hip
             # Libraries
             hipblas
-            openblas
+            lapack-reference
             scalapack
             # Utils
             cmake
