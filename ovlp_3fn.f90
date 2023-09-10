@@ -43,7 +43,7 @@ program riv_miniapp
    real(kind=dp), dimension(nb, n_points)             :: psi = 1.0_dp
    real(kind=dp), dimension(n_aux, n_points)          :: aux = 0.5_dp
    real(kind=dp), dimension(nb * nb, n_aux, n_points) :: part_atoms = 1.0_dp
-   real(kind=dp), dimension(nb * nb, n_aux)           :: ovlp_3fn
+   real(kind=dp), dimension(nb * nb, n_aux)           :: ovlp_3fn = 0.0_dp
 
    ! Compute RIV tensor
    call riv_compute_ovlp(nb, n_aux, n_points, psi, aux, part_atoms, ovlp_3fn)
