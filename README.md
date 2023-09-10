@@ -4,11 +4,11 @@ This repository contains an HPC mini-app designed to study a part of the RI-V al
 
 ## Mathematical overview
 
-Contrary to the convoluted logic commonly imposed by look-up tables in many quantum chemistry codes, the core mathematical computation in this segment is straightforward. The tensors \(O_{\mu\nu}^P\) can be constructed as:
+Contrary to the convoluted logic commonly imposed by look-up tables in many quantum chemistry codes, the core mathematical computation in this segment is straightforward. The tensors $O_{\mu\nu}^P\$ can be constructed as:
 
-\[
+$$
   O_{\mu\nu}^P = ((\psi_{\mu} \otimes \psi_{\mu}) \otimes \phi_{P}) \odot T_{\mu\nu P}
-\]
+$$
 
 That is, a series of tensor products followed by a Hadamard product. Below is a sample code snippet written in Julia:
 
