@@ -7,13 +7,13 @@ This repository contains an HPC mini-app designed to study a part of the RI-V al
 The RI-V approximation can be used to reduce the computational cost of the four center electronic integrals. In this formalism, the more expensive part are the computation of the integrals:
 
 $$
-  O_{\mu\nu P} = \int \frac{\phi_{\mu}(\mathbf{r})\phi_{\nu}(\mathbf{r})\phi_{P}(\mathbf{r}')}{|\mathbf{r}-\mathbf{r}'|}d\mathbf{r}d\mathbf{r}'
+  O_{\mu\nu}^P = \int \frac{\psi_{\mu}(\mathbf{r})\psi_{\nu}(\mathbf{r})\phi_{P}(\mathbf{r}')}{|\mathbf{r}-\mathbf{r}'|}d\mathbf{r}d\mathbf{r}'
 $$
 
-Contrary to the convoluted logic commonly imposed by look-up tables in many quantum chemistry codes, the core mathematical computation in this segment is straightforward. The tensors $O_{\mu\nu}^P\$ can be constructed as:
+Contrary to the convoluted logic commonly imposed by look-up tables in many quantum chemistry codes, the core mathematical computation in this segment is straightforward. We leave aside the details of the computation of the integral over $\mathbf{r}'$ with the Coulomb kernel, which yields the matrices $\Omega_P(\mathbf{r})$. The tensors $O_{\mu\nu}^P\$ then can be constructed as:
 
 $$
-  O_{\mu\nu}^P = ((\psi_{\mu} \otimes \psi_{\mu}) \otimes \phi_{P}) \odot T_{\mu\nu P}
+  O_{\mu\nu}^P = ((\psi_{\mu} \otimes \psi_{\mu}) \otimes \Omega_{P}) \odot T_{\mu\nu P}
 $$
 
 In this formulation, a sequence of tensor products culminates in a Hadamard product, with the integration weights being incorporated into the partition matrix $T_{\mu\nu P}$​. Below is a sample code snippet written in Julia to illustrate this approach.
