@@ -1,10 +1,8 @@
-#+TITLE: RIV algorithm mini-app
+# RIV algorithm mini-app
 
-A mini-app to isolate the RIV algorithm and facilitate the comparison with the HIP implementation.
+A mini-app to isolate a part of the RIV algorithm and facilitate the comparison with the HIP implementation. A Fortran-like pseudocode is:
 
-Fortran pseudocode:
-
-#+begin_src f90
+```julia
   ovlpefn(nb*nb, n_aux) = 0.0d0
   do k = 1, n_points
      psi_x_psi(nb * nb) = dger(psi(1:nb, k), psi(1:nb, k)) ! Flattened outer product (possibly using lapack)
@@ -15,5 +13,12 @@ Fortran pseudocode:
         end do
      end do
   end do
-#+end_src
+```
 
+## Nix flakes
+
+This project uses `nix flakes` to ensure reproducibility. To enter a development shell, issue this command on the root directory of this repo:
+
+```nix
+nix develop .#devShell.x86_64-linux
+```
