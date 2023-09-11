@@ -16,10 +16,10 @@ $$
   O_{nm}^P(k) = \psi_{\mu}(k) * \psi_{\nu}(k) * \Omega_P(k) * T_{\mu\nu P}(k)
 $$
 
-or in tensor form:
+or in tensor form for every `k`:
 
 $$
-  \mathcal{O}(k) = (\mathbf{\psi}(k) \otimes \mathbf{\psi}(k) \otimes \mathbf{\Omega}(k)) \odot \mathcal{T}
+  \mathcal{O} = (\mathbf{\psi} \otimes \mathbf{\psi} \otimes \mathbf{\Omega}) \odot \mathcal{T}
 $$
 
 In this formulation, a sequence of tensor products culminates in a Hadamard product, with the integration weights being incorporated into the partition matrix $T_{\mu\nu P}$​. Below is a sample code snippet written in Julia to illustrate this approach.
