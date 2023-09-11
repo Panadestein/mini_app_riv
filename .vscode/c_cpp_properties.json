@@ -1,0 +1,22 @@
+{
+    "configurations": [
+        {
+            "name": "Nix-HIP",
+            "includePath": [
+                "/nix/store/0jzgfd8iyq06hwip1rc8mhcfzllr62mw-hip-amd-5.4.4/include",
+                "/nix/store/c9f1fsk2rimgz15b26vl9jm6v79y9cba-rocm-llvm-clang-wrapper-5.4.4/resource-root/include",
+                "/nix/store/5yw2kzv6jlsbshbizcklwlggihm3nzjh-rocm-runtime-5.4.3/include",
+                "${workspaceFolder}/**"
+            ],
+            "defines": [
+                "__HIP_PLATFORM_HCC__",
+                "__HIP_PLATFORM_AMD__"
+            ],
+            "compilerPath": "/nix/store/v1wa8ysdv5lc516fbh25m8ysigwv1k20-gcc-wrapper-12.3.0/bin/gcc",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "linux-gcc-x64"
+        }
+    ],
+    "version": 4
+}

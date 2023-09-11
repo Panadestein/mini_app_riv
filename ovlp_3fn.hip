@@ -1,17 +1,22 @@
 #include <hip/hip_runtime.h>
-#include <hipblas.h>
 #include <hip/hip_runtime_api.h>
+#include <hipblas.h>
 
-__global__ void hadamard_add(int nb, int n_aux, double *ovlp_3fn, double *psi_x_psi_x_aux, double *part_atoms, int k) {
-    int i = blockIdx.i * blockDim.i + threadIdx.i;
-    int j = blockIdx.j * blockDim.j + threadIdx.j;
+extern "C" {
+void riv_compute_ovlp_gpu(int nb, int n_aux, int n_points, double *psi,
+                          double *aux, double *part_atoms, double *ovlp_3fn);
+}
+
+__global__ void hadamard_update(int nb, int n_aux, double *ovlp_3fn, double *psi_x_psi_x_aux, double *part_atoms, int k) {
+    int i = blockIdx.x * blockDim.x + threadIdx.x;
+    int j = blockIdx.y * blockDim.y + threadIdx.y;
 
     if (i < nb * nb && j < n_aux) {
         ovlp_3fn[i * n_aux + j] += psi_x_psi_x_aux[i * n_aux + j] * part_atoms[i * n_aux + k];
     }
 }
 
-void riv_compute_ovlp(int nb, int n_aux, int n_points, double *psi, double *aux, double *part_atoms, double *ovlp_3fn) {
+void riv_compute_ovlp_gpu(int nb, int n_aux, int n_points, double *psi, double *aux, double *part_atoms, double *ovlp_3fn) {
     hipblasHandle_t handle;
     hipblasCreate(&handle);
 
@@ -31,7 +36,7 @@ void riv_compute_ovlp(int nb, int n_aux, int n_points, double *psi, double *aux,
     hipMemcpy(d_ovlp_3fn, ovlp_3fn, nb * nb * n_aux * sizeof(double), hipMemcpyHostToDevice);
 
     // Constants for hipblas
-    const double alpha = 1.0, beta = 0.0;
+    const double alpha = 1.0;
 
     for (int k = 0; k < n_points; ++k) {
         hipblasDger(handle, nb, nb, &alpha, d_psi + k * nb, 1, d_psi + k * nb, 1, d_psi_x_psi, nb);
@@ -40,7 +45,7 @@ void riv_compute_ovlp(int nb, int n_aux, int n_points, double *psi, double *aux,
         // Launching the Hadamard addition kernel
         dim3 dimBlock(16, 16);
         dim3 dimGrid((nb * nb + 15) / 16, (n_aux + 15) / 16);
-        hadamard_add<<<dimGrid, dimBlock>>>(nb, n_aux, d_ovlp_3fn, d_psi_x_psi_x_aux, d_part_atoms, k);
+        hadamard_update<<<dimGrid, dimBlock>>>(nb, n_aux, d_ovlp_3fn, d_psi_x_psi_x_aux, d_part_atoms, k);
     }
 
     // Copying the result back to host
@@ -55,12 +60,4 @@ void riv_compute_ovlp(int nb, int n_aux, int n_points, double *psi, double *aux,
     hipFree(d_psi_x_psi_x_aux);
 
     hipblasDestroy(handle);
-}
-
-int main() {
-    // Initialize your variables, allocate host memory and populate them
-
-    // Call the riv_compute_ovlp function
-
-    return 0;
 }

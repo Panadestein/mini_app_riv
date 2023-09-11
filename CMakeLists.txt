@@ -29,7 +29,7 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
 endif()
 
 # Add an executable target
-add_executable(riv_tens ovlp_3fn.f90 lapack_interfaces.f90 kinds.f90)
+add_executable(riv_tens ovlp_3fn.f90 lapack_interfaces.f90 kinds.f90 ovlp_3fn.hip)
 
 # Link libraries
 target_link_libraries(riv_tens ${BLAS_LIBRARIES} ${SCALAPACK_LIBRARIES} roc::hipblas)
