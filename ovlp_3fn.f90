@@ -61,9 +61,10 @@ program riv_miniapp
    implicit none
 
    ! Constants
-   integer, parameter       :: nb = 10
-   integer, parameter       :: n_aux = 10
-   integer, parameter       :: n_points = 10
+   logical, parameter       :: cmp_vals = .false.
+   integer, parameter       :: nb = 300
+   integer, parameter       :: n_aux = 100
+   integer, parameter       :: n_points = 80
    real(kind=dp), parameter :: accuracy = 1.0e-6
 
    ! Internal variables
@@ -73,6 +74,7 @@ program riv_miniapp
    real(kind=dp), dimension(:, :, :), allocatable :: part_atoms
    real(kind=dp), dimension(:, :), allocatable    :: ovlp_3fn
    real(kind=dp), dimension(:, :), allocatable    :: ovlp_3fn_gpu
+   real(kind=dp)                                  :: t_init, t_end, t_cpu, t_gpu
 
    ! Allocate ans initialize arrays
    allocate(psi(nb, n_points))
@@ -88,19 +90,31 @@ program riv_miniapp
    ovlp_3fn = 0.0_dp
    ovlp_3fn_gpu = 0.0_dp
 
-   ! Compute RIV tensor
+   ! Compute RIV tensor in the CPU
+   call cpu_time(t_init)
    call riv_compute_ovlp(nb, n_aux, n_points, psi, aux, part_atoms, ovlp_3fn)
+   call cpu_time(t_end)
+   t_cpu = t_end - t_init
+
+   ! Compute RIV tensor in the GPU
+   call cpu_time(t_init)
    call riv_compute_ovlp_gpu(nb, n_aux, n_points, psi, aux, part_atoms, ovlp_3fn_gpu)
+   call cpu_time(t_end)
+   t_gpu = t_end - t_init
+
+   print *, "T_cpu / T_gpu = ", t_cpu / t_gpu
 
    ! Compare values
-   do p = 1, n_aux
-      do mn = 1, nb * nb
-         if ( abs(ovlp_3fn(mn, p) - ovlp_3fn_gpu(mn, p)) > accuracy ) then
-            print *, "Matrix mismatch (BLAS/cuBLAS) at index (", mn, ",", p, "):",&
-               ovlp_3fn(mn, p), "vs", ovlp_3fn_gpu(mn, p)
-         end if
+   if (cmp_vals) then
+      do p = 1, n_aux
+         do mn = 1, nb * nb
+            if (abs(ovlp_3fn(mn, p) - ovlp_3fn_gpu(mn, p)) > accuracy) then
+               print *, "Matrix mismatch (BLAS/cuBLAS) at index (", mn, ",", p, "):",&
+                  ovlp_3fn(mn, p), "vs", ovlp_3fn_gpu(mn, p)
+            end if
+         end do
       end do
-   end do
+   end if
 
    ! Free memory
    deallocate(psi)

@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Modules for HIP
 module load LUMI/22.12 buildtools/22.12 CMake/3.25.2
 module load PrgEnv-cray

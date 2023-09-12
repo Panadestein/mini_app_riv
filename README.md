@@ -39,7 +39,7 @@ Here we loop through the quadrature points `k`, so the input arrays have an addi
 In LUMI the BLAS/LAPACK routines are provided by the `cray-libsci` module. The `findblas` macro won't work, so you have to manually give the path:
 
 ```bash
-cmake -DBLAS_LIBRARIES=${CRAY_LIBSCI_PREFIX_DIR}/lib/libsci_cray.so ..
+cmake -DBLAS_LIBRARIES=${CRAY_LIBSCI_PREFIX_DIR}/lib/libsci_cray.so -DCMAKE_BUILD_TYPE=Release ..
 ```
 
 You will find the necessary modules in the `modules_lumi.sh` file.
