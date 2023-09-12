@@ -34,6 +34,16 @@ In this formulation, a sequence of tensor products culminates in a Hadamard prod
 
 Here we loop through the quadrature points `k`, so the input arrays have an additional dimension.
 
+## LUMI setup
+
+In LUMI the BLAS/LAPACK routines are provided by the `cray-libsci` module. The `findblas` macro won't work, so you have to manually give the path:
+
+```bash
+cmake -DBLAS_LIBRARIES=${CRAY_LIBSCI_PREFIX_DIR}/lib/libsci_cray.so ..
+```
+
+You will find the necessary modules in the `modules_lumi.sh` file.
+
 ## Nix flakes
 
 This project employs Nix Flakes to establish a reproducible environment. To initiate a development shell, navigate to the repository's root directory and execute the following command:
