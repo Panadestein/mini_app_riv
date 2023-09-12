@@ -1,8 +1,15 @@
 # Set the minimum required version of CMake
 cmake_minimum_required(VERSION 3.22)
 
+# Set compilers
+set(CMAKE_Fortran_COMPILER "gfortran" CACHE STRING "Fortran compiler" FORCE)
+set(CMAKE_HIP_FLAGS "${CMAKE_HIP_FLAGS} --rocm-path=/nix/store/5yw2kzv6jlsbshbizcklwlggihm3nzjh-rocm-runtime-5.4.3/")
+set(CMAKE_HIP_FLAGS "${CMAKE_HIP_FLAGS} --rocm-device-lib-path=/nix/store/wlmk21f8mqmm84mqrkrxwd7x8layrh85-rocm-device-libs-5.4.4/amdgcn/bitcode/")
+set(CMAKE_HIP_FLAGS "${CMAKE_HIP_FLAGS}" CACHE STRING "Arguments HIP" FORCE)
+
 # Define the project name and the languages
-project(mini_app_riv LANGUAGES CXX Fortran)
+project(mini_app_riv Fortran CXX)
+enable_language(HIP)
 
 # Find the BLAS and LAPACK libraries
 find_package(BLAS REQUIRED)

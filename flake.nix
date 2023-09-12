@@ -1,6 +1,6 @@
 {
   description = "An HIP development flake";
-  nixConfig.bash-prompt = ''\033[1;31m[\033[0m\033[1;37mdev .\033[0m\033[1;34m $(basename \$$PWD)\033[0m\033[1;31m]\033[0m '';
+  nixConfig.bash-prompt = ''\[\033[1;31m\][\[\033[0m\]\[\033[1;37m\]dev .\[\033[0m\]\[\033[1;34m\] $(basename \$$PWD)\[\033[0m\]\[\033[1;31m\]]\[\033[0m\] '';
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
@@ -32,9 +32,11 @@
             # Compilers
             gcc
             gfortran
+            # HIP and ROCm
             hip
-            # Libraries
             hipblas
+            rocm-device-libs
+            # BLAS/ScaLAPACK
             lapack-reference
             scalapack
             # Utils
