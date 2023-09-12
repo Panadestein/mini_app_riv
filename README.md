@@ -10,13 +10,13 @@ $$
   O_{\mu\nu}^P = \int \frac{\psi_{\mu}(\mathbf{r})\psi_{\nu}(\mathbf{r})\phi_{P}(\mathbf{r}')}{|\mathbf{r}-\mathbf{r}'|}d\mathbf{r}d\mathbf{r}'
 $$
 
-Contrary to the convoluted logic commonly imposed by look-up tables in many quantum chemistry codes, the core mathematical computation in this segment is straightforward. We leave aside the details of the computation of the integral over $\mathbf{r}'$ with the Coulomb kernel, which yields the matrices $\Omega_P(\mathbf{r})$. The tensors $O_{\mu\nu}^P\$ then can be constructed as:
+Contrary to the convoluted logic commonly imposed by look-up tables in many quantum chemistry codes, the core mathematical computation in this segment is straightforward. We leave aside the details of the computation of the integral over $\mathbf{r}'$ with the Coulomb kernel, which yields the matrices $\Omega_P(\mathbf{r})$. Using a Levedev quadrature with points $k$, the tensors $O_{\mu\nu}^P\$ can then be constructed as:
 
 $$
   O_{\mu\nu}^P(k) = \psi_{\mu}(k) * \psi_{\nu}(k) * \Omega_P(k) * T_{\mu\nu P}(k)
 $$
 
-or in tensor form for every `k`:
+or in tensor form for every $k$:
 
 $$
   \mathcal{O} = (\boldsymbol{\psi} \otimes \boldsymbol{\psi} \otimes \mathbf{\Omega}) \odot \mathcal{T}
@@ -36,7 +36,7 @@ Here we loop through the quadrature points `k`, so the input arrays have an addi
 
 ## LUMI setup
 
-In LUMI the BLAS/LAPACK routines are provided by the `cray-libsci` module. The `findblas` macro won't work, so you have to manually give the path:
+In [LUMI](https://www.lumi-supercomputer.eu/) the BLAS/LAPACK routines are provided by the `cray-libsci` module. The `findblas` macro won't work, so you have to manually give the path:
 
 ```bash
 cmake -DBLAS_LIBRARIES=${CRAY_LIBSCI_PREFIX_DIR}/lib/libsci_cray.so -DCMAKE_BUILD_TYPE=Release ..
